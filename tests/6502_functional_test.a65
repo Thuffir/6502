@@ -177,6 +177,9 @@ trap_vc macro
 ; please observe that during the test the stack gets invalidated
 ; therefore a RTS inside the success macro is not possible
 success macro
+        lda #'E'
+        ldx #'N'
+        ldy #'D'
         jmp *           ;test passed, no errors
         endm
     endif
