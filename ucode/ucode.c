@@ -70,7 +70,7 @@
 #define WR_FLAGS    (12 << DST_POS)
 #define WR_INST     (13 << DST_POS)
 
-// ALU operations (3 Bits, shared input with constant register input)
+// ALU operations (4 Bits, shared input with constant register input)
 #define ALU_POS     8
 #define ALU_ADD     ( 0 << ALU_POS)   // Binary add
 #define ALU_SUB     ( 1 << ALU_POS)   // Binary subtract
@@ -80,23 +80,35 @@
 #define ALU_OR      ( 5 << ALU_POS)
 #define ALU_XOR     ( 6 << ALU_POS)
 #define ALU_SHR     ( 7 << ALU_POS)
+#define ALU_CLRBIT  ( 8 << ALU_POS)   // ALU Clear Bit
+#define ALU_SETBIT  ( 9 << ALU_POS)   // ALU Set Bit
+#define ALU_TSTBIT  (10 << ALU_POS)   // ALU Test Bit
+#define ALU_INVA    (11 << ALU_POS)   // ALU Invert A
 
-// Constant register output (3 Bits, shared input with ALU operation)
+// Constant register output (4 Bits, shared input with ALU operation)
 #define CONST_POS   8
 #define CONST_0     ( 0 << CONST_POS)
 #define CONST_1     ( 1 << CONST_POS)
-#define CONST_FA    ( 2 << CONST_POS)
-#define CONST_FB    ( 3 << CONST_POS)
-#define CONST_FC    ( 4 << CONST_POS)
-#define CONST_FD    ( 5 << CONST_POS)
-#define CONST_FE    ( 6 << CONST_POS)
-#define CONST_FF    ( 7 << CONST_POS)
+#define CONST_2     ( 2 << CONST_POS)
+#define CONST_3     ( 3 << CONST_POS)
+#define CONST_4     ( 4 << CONST_POS)
+#define CONST_5     ( 5 << CONST_POS)
+#define CONST_6     ( 6 << CONST_POS)
+#define CONST_7     ( 7 << CONST_POS)
+#define CONST_F8    ( 8 << CONST_POS)
+#define CONST_F9    ( 9 << CONST_POS)
+#define CONST_FA    (10 << CONST_POS)
+#define CONST_FB    (11 << CONST_POS)
+#define CONST_FC    (12 << CONST_POS)
+#define CONST_FD    (13 << CONST_POS)
+#define CONST_FE    (14 << CONST_POS)
+#define CONST_FF    (15 << CONST_POS)
 
 // Break opcode as constant for interrupt opcode injection
 #define CONST_BRK   (CONST_0)
 
 // Flags input to uCode ROM (4 bits)
-#define FLAGIN_POS  11
+#define FLAGIN_POS  12
 #define FLAGIN_C    ( 0 << FLAGIN_POS)  // Carry flag
 #define FLAGIN_Z    ( 1 << FLAGIN_POS)  // Carry flag
 #define FLAGIN_V    ( 2 << FLAGIN_POS)  // Overflow flag
@@ -106,29 +118,31 @@
 #define FLAGIN_INTR ( 6 << FLAGIN_POS)  // Signal for all interrupts (INT, NMI, RST)
 #define FLAGIN_NMI  ( 7 << FLAGIN_POS)  // NMI
 #define FLAGIN_RST  ( 8 << FLAGIN_POS)  // Reset
+#define FLAGIN_ALOV ( 9 << FLAGIN_POS)  // ADDRL overflow signal
+#define FLAGIN_ZALU (10 << FLAGIN_POS)  // Zero of the last ALU output
 
 // Address output select (2 bits)
-#define SELADDR_POS 15
+#define SELADDR_POS 16
 #define ADDR_PC     ( 0 << SELADDR_POS) // Address is driven by the PC registers
 #define ADDR_FULL   ( 1 << SELADDR_POS) // Address is driven by the ADDR registers
 #define ADDR_ZP     ( 2 << SELADDR_POS) // Address is driven by ADDRL in ZERO page
 #define ADDR_SP     ( 3 << SELADDR_POS) // Address is driven by the SP register in the stack page
 
 // Other signals
-#define CI_ALU      ( 1 << 17)          // ALU Carry Input
-#define INC_PC      ( 1 << 18)          // PC register increment enable
-#define RST_USTEP   ( 1 << 19)          // End of uSteps, reset uStep counter
-#define UPD_C       ( 1 << 20)          // Update the Carry flag in the PS register
-#define UPD_Z       ( 1 << 21)          // Update the Zero flag in the PS register
-#define UPD_I       ( 1 << 22)          // Update the Interrupt Disable flag in the PS register
-#define UPD_D       ( 1 << 23)          // Update the Decimal flag in the PS register
-#define UPD_V       ( 1 << 24)          // Update the Overflow flag in the PS register
-#define UPD_N       ( 1 << 25)          // Update the Negative flag in the PS register
-#define INC_ADDRL   ( 1 << 26)          // ADDRL register increment enable
-#define INC_ADDRH   ( 1 << 27)          // ADDRH register increment enable
-#define CNT_SP      ( 1 << 28)          // SP register increment or decrement enable
-#define DIR_SP      ( 1 << 29)          // SP register increment (0) or decrement (1)
-#define INT_HOLD    ( 1 << 30)          // Hold the interrupt signals so they do not change
+#define CI_ALU      ( 1 << 18)          // ALU Carry Input
+#define INC_PC      ( 1 << 19)          // PC register increment enable
+#define RST_USTEP   ( 1 << 20)          // End of uSteps, reset uStep counter
+#define UPD_C       ( 1 << 21)          // Update the Carry flag in the PS register
+#define UPD_Z       ( 1 << 22)          // Update the Zero flag in the PS register
+#define UPD_I       ( 1 << 23)          // Update the Interrupt Disable flag in the PS register
+#define UPD_D       ( 1 << 24)          // Update the Decimal flag in the PS register
+#define UPD_V       ( 1 << 25)          // Update the Overflow flag in the PS register
+#define UPD_N       ( 1 << 26)          // Update the Negative flag in the PS register
+#define INC_ADDRL   ( 1 << 27)          // ADDRL register increment enable
+#define INC_ADDRH   ( 1 << 28)          // ADDRH register increment enable
+#define CNT_SP      ( 1 << 29)          // SP register increment or decrement enable
+#define DIR_SP      ( 1 << 30)          // SP register increment (0) or decrement (1)
+#define INT_HOLD    ( 1 << 31)          // Hold the interrupt signals so they do not change
 
 // Update Negative and Zero flags
 #define UPD_NZ      (UPD_N | UPD_Z)
@@ -187,16 +201,28 @@
   /* Add the together into ADDRL*/ \
   USTEP_STEP(OE_ALU | ALU_ADD | WR_ADDRL)
 
-// Pre-Indexed Indirect, "(Zero-Page,X)"
-#define USTEP_ADDR_ZX_IND \
-  /* Load zero page base address + X into ADDRL */ \
-  USTEP_ADDR_Z_IDX(OE_X); \
+// Load indirect address from Zero-Page pointed by ADDRL
+#define USTEP_ADDR_INDZ \
   /* Put address low byte into A temporarily */ \
   USTEP_STEP(OE_RAM | ADDR_ZP | WR_ALU_A | INC_ADDRL);\
   /* Load address high byte into ADDRH */ \
   USTEP_STEP(OE_RAM | ADDR_ZP | WR_ADDRH); \
   /* Load saved address low byte into ADDRL */ \
   USTEP_STEP(OE_ALU_A | WR_ADDRL)
+
+// Zero-Page Indirect (65C02)
+#define USTEP_ADDR_Z_IND \
+  /* Load zero page address into ADDRL */ \
+  USTEP_ADDR_Z; \
+  /* Put indirect address into ADDRL and ADDRH from zero page */ \
+  USTEP_ADDR_INDZ;
+
+// Pre-Indexed Indirect, "(Zero-Page,X)"
+#define USTEP_ADDR_ZX_IND \
+  /* Load zero page base address + X into ADDRL */ \
+  USTEP_ADDR_Z_IDX(OE_X); \
+  /* Put indirect address into ADDRL and ADDRH from zero page */ \
+  USTEP_ADDR_INDZ;
 
 // Absolute Addressing
 #define USTEP_ADDR_ABS \
@@ -241,6 +267,12 @@
 // Load data into a register updating N and Z flags
 #define LD_NZ(addr, wr) USTEP_LAST(OE_RAM | addr | UPD_NZ | wr)
 
+// Supported CPU types
+enum {
+  CPU_6502,
+  CPU_65C02
+} cpuType = CPU_6502;
+
 // Opcode nmemonics as strings
 char *instr[INSTR_MAX];
 // Number of uSteps used for a specific opcode
@@ -249,89 +281,11 @@ uint8_t uStep[INSTR_MAX];
 uint32_t rom[UCODE_SIZE];
 
 /***********************************************************************************************************************
- * Print one uCode step
+ * Generate 6502 microcode
  **********************************************************************************************************************/
-static void UcodePrintStep(unsigned int same, unsigned int last, unsigned int lasti)
+static void GenerateUcode6502(void)
 {
-  // Print instruction opcode and mnemonic at the beginning of each opcode
-  if((lasti % USTEP_MAX) == 0) {
-    unsigned i = (lasti / USTEP_MAX) % INSTR_MAX;
-    char *instName = instr[i];
-    printf("\n");
-    if(instName != NULL) {
-      printf("# %02X - %s\n", i, instName);
-    }
-  }
-  else {
-    printf(" ");
-  }
-
-  // Print one or more same steps
-  if(same == 1) {
-    printf("%X", last);
-  }
-  else {
-    printf("%u*%X", same, last);
-  }
-}
-
-/***********************************************************************************************************************
- * Print uCode as RLE encoded hex file
- **********************************************************************************************************************/
-static void UcodePrintRLE(void)
-{
-  unsigned int n = 0;
-  printf("v2.0 raw\n\n");
-
-  // Instruction statistics
-  printf("# Instr.   | Op | Cycles\n");
-  for(unsigned int i = 0; i < INSTR_MAX; i++) {
-    if(instr[i] != NULL) {
-      n++;
-      printf("# %-8s | ", instr[i]);
-      printf("%02X | ", i);
-      printf("%2u\n", uStep[i]);
-    }
-  }
-  printf("# Total: %u\n", n);
-
-  // Print all uSteps for all opcodes
-  uint32_t last = rom[0];
-  unsigned int same = 0, lasti = 0;
-  for(unsigned int i = 0; i < UCODE_SIZE; i++) {
-    if(rom[i] == last) {
-      same++;
-    }
-    else {
-      UcodePrintStep(same, last, lasti);
-      same = 1;
-    }
-    last = rom[i];
-    lasti = i;
-  }
-  UcodePrintStep(same, last, lasti);
-  printf("\n");
-}
-
-/***********************************************************************************************************************
- * Define all opcodes and uCode steps
- **********************************************************************************************************************/
-int main(void)
-{
-  // Fill with end ucode
-  for(unsigned int i = 0; i < UCODE_SIZE; i++) {
-    rom[i] = RST_USTEP;
-  }
-
-  // Fill each uStep 0 with Fetch and interrupt detection
-  for(unsigned int i = 0; i < INSTR_MAX; i ++) {
-    // No interrupt
-    rom[(0 << ROM_FLAGS_POS) | (i << ROM_INSTR_POS)] = FLAGIN_INTR | OE_RAM | WR_INST | INC_PC;
-    // Interrupt asserted, inject BRK opcode
-    rom[(1 << ROM_FLAGS_POS) | (i << ROM_INSTR_POS)] = FLAGIN_INTR | OE_CONST | CONST_BRK | WR_INST | INT_HOLD;
-  }
-
-  // All 6502 valid instructions (151)
+  // All valid 6502 instruction opcodes (151)
   enum {
     // Legend:
     // *  - add 1 to cycles if page boundary is crossed
@@ -387,9 +341,9 @@ int main(void)
     BVC       = 0x50, // | relative     | BVC oper     | 2 | 2** | branch on V = 0
     BVS       = 0x70, // | relative     | BVS oper     | 2 | 2** | branch on V = 1
 
-    // BIT- Test Bits in Memory with Accumulator (A AND M, M7 -> N, M6 -> V)
-    // N Z C I D V
-    // M7  + - - - M6
+    // BI T- Test Bits in Memory with Accumulator (A AND M, M7 -> N, M6 -> V)
+    //  N Z C I D V
+    // M7 + - - - M6
     // ENUM   = Opcode   | Addressing   | Assembler    | B | Cycles
     BIT_Z     = 0x24, // | zeropage     | BIT oper     | 2 | 3
     BIT_ABS   = 0x2C, // | absolute     | BIT oper     | 3 | 4
@@ -872,8 +826,8 @@ int main(void)
 #define ASL(src, dst) \
   /* src -> A */ \
   USTEP_STEP(src | WR_ALU_A); \
-  /* src -> B */ \
-  USTEP_STEP(src | WR_ALU_B); \
+  /* A -> B */ \
+  USTEP_STEP(OE_ALU_A | WR_ALU_B); \
   /* src + src -> dst */ \
   USTEP_LAST(OE_ALU | ALU_ADD | UPD_NZ | UPD_C | dst)
 
@@ -905,8 +859,8 @@ int main(void)
 #define ROL(src, dst) \
   /* src -> A */ \
   USTEP_STEP(src | WR_ALU_A); \
-  /* src -> B */ \
-  USTEP_STEP(src | WR_ALU_B); \
+  /* A -> B */ \
+  USTEP_STEP(OE_ALU_A | WR_ALU_B); \
   /* src + src + C -> dst */ \
   USTEP_FLST( \
     FLAGIN_C | OE_ALU | ALU_ADD | UPD_NZ | UPD_C | dst, \
@@ -1000,7 +954,7 @@ int main(void)
    ********************************************************************************************************************/
 #define BIT(addr) \
   /* Memory -> A */ \
-  USTEP_STEP(addr | WR_ALU_A); \
+  USTEP_STEP(OE_RAM | addr | WR_ALU_A); \
   /* Bit 6 -> V, Bit 7 -> N */ \
   USTEP_STEP(OE_ALU_A | WR_FLAGS | UPD_N | UPD_V); \
   /* ACC -> B */ \
@@ -1010,11 +964,11 @@ int main(void)
 
   USTEP_DEFINE(BIT_Z);
   USTEP_ADDR_Z;
-  BIT(OE_RAM | ADDR_ZP);
+  BIT(ADDR_ZP);
 
   USTEP_DEFINE(BIT_ABS);
   USTEP_ADDR_ABS;
-  BIT(OE_RAM | ADDR_FULL);
+  BIT(ADDR_FULL);
 
   /*********************************************************************************************************************
    * Comparisons
@@ -1097,10 +1051,10 @@ int main(void)
    * + + - - - -
    ********************************************************************************************************************/
 #define INCDEC(src, dst, const) \
-  /* Source -> A */ \
-  USTEP_STEP(src | WR_ALU_A); \
   /* 1 or -1 -> B */ \
   USTEP_STEP(OE_CONST | const | WR_ALU_B); \
+  /* Source -> A */ \
+  USTEP_STEP(src | WR_ALU_A); \
   /* Increment or decrement */ \
   USTEP_LAST(OE_ALU | ALU_ADD | UPD_NZ | dst)
 
@@ -1361,21 +1315,25 @@ int main(void)
   /*********************************************************************************************************************
    * Stack Instructions
    ********************************************************************************************************************/
+#define PUSH_REG(reg) \
+  USTEP_LAST(reg | ADDR_SP | WR_RAM | DEC_SP)
+#define PULL_REG(reg) \
+  USTEP_STEP(INC_SP); \
+  USTEP_LAST(OE_RAM | ADDR_SP | reg | UPD_NZ)
+
   USTEP_DEFINE(PHA);
-  USTEP_LAST(OE_ACC | ADDR_SP | WR_RAM | DEC_SP);
+  PUSH_REG(OE_ACC);
 
   USTEP_DEFINE(PLA);
-  USTEP_STEP(INC_SP);
-  USTEP_LAST(OE_RAM | ADDR_SP | WR_ACC | UPD_NZ);
+  PULL_REG(WR_ACC);
 
   // The status register will be pushed with the break flag and bit 5 set to 1.
   USTEP_DEFINE(PHP);
-  USTEP_LAST(OE_FLAGS | WR_RAM | ADDR_SP | DEC_SP);
+  PUSH_REG(OE_FLAGS);
 
   // The status register will be pulled with the break flag and bit 5 ignored.
   USTEP_DEFINE(PLP);
-  USTEP_STEP(INC_SP);
-  USTEP_LAST(OE_RAM | ADDR_SP | WR_FLAGS | UPD_C | UPD_Z | UPD_I | UPD_D | UPD_V | UPD_N);
+  PULL_REG(WR_FLAGS | UPD_C | UPD_Z | UPD_I | UPD_D | UPD_V | UPD_N);
 
   /*********************************************************************************************************************
    * Jumps & Subroutines
@@ -1392,8 +1350,17 @@ int main(void)
   // Indirect address -> ADDRL and ADDRH
   USTEP_STEP(OE_RAM | ADDR_PC | INC_PC | WR_ADDRL);
   USTEP_STEP(OE_RAM | ADDR_PC | WR_ADDRH);
-  // Jump address -> PCL and PCH (Page boundary bug here, PCH does not automatically increment!)
-  USTEP_STEP(OE_RAM | ADDR_FULL | WR_PCL | INC_ADDRL);
+  // Jump address -> PCL and PCH (6502 page boundary bug here, ADDRH does not increment!)
+  if(cpuType == CPU_6502) {
+    USTEP_STEP(OE_RAM | ADDR_FULL | WR_PCL | INC_ADDRL);
+  }
+  // Fixed in 65C02
+  else {
+    USTEP_FLAG(
+      FLAGIN_ALOV | OE_RAM | ADDR_FULL | WR_PCL | INC_ADDRL,
+      FLAGIN_ALOV | OE_RAM | ADDR_FULL | WR_PCL | INC_ADDRL | INC_ADDRH
+    );
+  }
   USTEP_LAST(OE_RAM | ADDR_FULL | WR_PCH);
 
   USTEP_DEFINE(JSR);
@@ -1432,22 +1399,10 @@ int main(void)
   /*********************************************************************************************************************
    * Conditional Branch Instructions
    ********************************************************************************************************************/
-#define BRANCH_ON_FLAG_0(flag) \
-  USTEP_FLAG( \
-    /* If flag clear, branch offset -> B and PC++ */ \
-    flag | OE_RAM | ADDR_PC | INC_PC | WR_ALU_B, \
-    /* If flag set, PC++ and end of uCode */ \
-    flag | INC_PC | RST_USTEP \
-  )
-#define BRANCH_ON_FLAG_1(flag) \
-  USTEP_FLAG( \
-    /* If flag clear, PC++ and end of uCode */ \
-    flag | INC_PC | RST_USTEP, \
-    /* If flag set, branch offset -> B and PC++ */ \
-    flag | OE_RAM | ADDR_PC | INC_PC | WR_ALU_B \
-  )
-#define BRANCH_ON_FLAG(flag, onvalue) \
-  BRANCH_ON_FLAG_##onvalue(flag); \
+  // Branch offset -> B and PC++
+#define BRANCH_LOAD_B (OE_RAM | ADDR_PC | INC_PC | WR_ALU_B)
+  // Do the relative branching
+#define BRANCH_DO_BRANCH \
   /* PCL -> A */ \
   USTEP_STEP(OE_PCL | WR_ALU_A); \
   /* offset + PCL -> PCL */ \
@@ -1466,6 +1421,26 @@ int main(void)
     FLAGIN_CALU | OE_ALU | ALU_ADD | WR_PCH, \
     FLAGIN_CALU | OE_ALU | ALU_ADD | WR_PCH | CI_ALU \
   )
+  // Take the branch if flag is clear
+#define BRANCH_ON_FLAG_0(flag) \
+  USTEP_FLAG( \
+    /* If flag clear, branch offset -> B and PC++ */ \
+    flag | BRANCH_LOAD_B, \
+    /* If flag set, PC++ and end of uCode */ \
+    flag | INC_PC | RST_USTEP \
+  )
+  // Take the branch if flag is set
+#define BRANCH_ON_FLAG_1(flag) \
+  USTEP_FLAG( \
+    /* If flag clear, PC++ and end of uCode */ \
+    flag | INC_PC | RST_USTEP, \
+    /* If flag set, branch offset -> B and PC++ */ \
+    flag | BRANCH_LOAD_B \
+  )
+  // Branch depending of flag value
+#define BRANCH_ON_FLAG(flag, onvalue) \
+  BRANCH_ON_FLAG_##onvalue(flag); \
+  BRANCH_DO_BRANCH
 
   USTEP_DEFINE(BCC);
   BRANCH_ON_FLAG(FLAGIN_C, 0);
@@ -1539,8 +1514,14 @@ int main(void)
     INT_HOLD | FLAGIN_RST
   );
 
-  // Set interrupt disable flag
-  USTEP_STEP(INT_HOLD | FLAGIN_INTR | OE_CONST | CONST_FF | WR_FLAGS | UPD_I);
+  // 6502: Set interrupt disable flag only
+  if(cpuType == CPU_6502) {
+    USTEP_STEP(INT_HOLD | OE_CONST | CONST_FF | WR_FLAGS | UPD_I);
+  }
+  // 65C02: Set interrupt disable flag and clear decimal flag
+  else {
+    USTEP_STEP(INT_HOLD | OE_CONST | CONST_4  | WR_FLAGS | UPD_I | UPD_D);
+  }
 
   // Fetch interrupt vector
   USTEP_STEP(INT_HOLD | OE_CONST| CONST_FF | WR_ADDRH);
@@ -1564,6 +1545,510 @@ int main(void)
    ********************************************************************************************************************/
   USTEP_DEFINE(NOP);
   USTEP_LAST(0);
+}
+
+/***********************************************************************************************************************
+ * Generate 65C02 microcode
+ **********************************************************************************************************************/
+static void GenerateUcode65C02(void)
+{
+  // 65C02 extra instruction opcodes
+  enum {
+    // 6502 instructions with zero page indirect addressing, INSTR (zpaddr), 2 bytes, 5 cycles
+    ADC_INDZ  = 0x72,
+    AND_INDZ  = 0x32,
+    CMP_INDZ  = 0xD2,
+    EOR_INDZ  = 0x52,
+    LDA_INDZ  = 0xB2,
+    ORA_INDZ  = 0x12,
+    SBC_INDZ  = 0xF2,
+    STA_INDZ  = 0x92,
+
+    // BIT - Test Bits in Memory with Accumulator, other addressing modes (A AND M, M7 -> N, M6 -> V)
+    //  N Z C I D V
+    // M7 + - - - M6
+    // ENUM   = Opcode   | Addressing   | Assembler    | B | Cycles
+    BIT_IMM   = 0x89, // | immediate    | BIT #oper    | 2 | 2      Does not affect N and V flags!
+    BIT_ZX    = 0x34, // | zeropage,X   | BIT oper,X   | 2 | 4
+    BIT_ABSX  = 0x3C, // | absolute,X   | BIT oper,X   | 3 | 4*
+
+    // ACC increment / decrement
+    // N Z C I D V
+    // + + - - - -
+    // ENUM   = Opcode   | Addressing   | Assembler    | B | C | Operation
+    DEC_A     = 0x3A, // | implied      | DEC A / DEA  | 1 | 2 | A - 1 -> A
+    INC_A     = 0x1A, // | implied      | INC A / INA  | 1 | 2 | A + 1 -> A
+
+    // JMP with absolute indexed indirect addressing, JMP (addr,x), 3 bytes, 6 cycles
+    JMP_INDX  = 0x7C,
+
+    // Branch Relative Always, 2 bytes, 3 - 4 cycles
+    BRA       = 0x80,
+
+    // Stack Instructions
+    // ENUM   = Opcode   | Addressing   | Assembler    | B | C | Operation | N Z C I D V
+    PHX       = 0xDA, // | implied      | PHX          | 1 | 3 | push X    | - - - - - -
+    PLX       = 0xFA, // | implied      | PLX          | 1 | 4 | pull X    | + + - - - -
+    PHY       = 0x5A, // | implied      | PHY          | 1 | 3 | push Y    | - - - - - -
+    PLY       = 0x7A, // | implied      | PLY          | 1 | 4 | pull Y    | + + - - - -
+
+    // STZ - Store Zero in Memory (0 -> M)
+    // N Z C I D V
+    // - - - - - -
+    // ENUM   = Opcode   | Addressing   | Assembler    | B | Cycles
+    STZ_Z     = 0x64, // | zeropage     | STZ oper     | 2 | 3
+    STZ_ZX    = 0x74, // | zeropage,X   | STZ oper,X   | 2 | 4
+    STZ_ABS   = 0x9C, // | absolute     | STZ oper     | 3 | 4
+    STZ_ABSX  = 0x9E, // | absolute,X   | STZ oper,X   | 3 | 5
+
+    // TSB - Test & Set memory Bits with A. (M | A -> M, M & A -> Z)
+    // N Z C I D V
+    // - + - - - -
+    // ENUM   = Opcode   | Addressing   | Assembler    | B | Cycles
+    TSB_Z     = 0x04, // | zeropage     | TSB oper     | 2 | 5
+    TSB_ABS   = 0x0C, // | absolute     | TSB oper     | 3 | 6
+
+    // TRB - Test & Reset memory Bits with A. (M & ~A -> M, M & A -> Z)
+    // N Z C I D V
+    // - + - - - -
+    // ENUM   = Opcode   | Addressing   | Assembler    | B | Cycles
+    TRB_Z     = 0x14, // | zeropage     | TRB oper     | 2 | 5
+    TRB_ABS   = 0x1C, // | absolute     | TRB oper     | 3 | 6
+
+    // RMB - Reset Zero Page Memory Bit, 2 bytes, 5 cycles
+    RMB0      = 0x07,
+    RMB1      = 0x17,
+    RMB2      = 0x27,
+    RMB3      = 0x37,
+    RMB4      = 0x47,
+    RMB5      = 0x57,
+    RMB6      = 0x67,
+    RMB7      = 0x77,
+
+    // SMB - Set Zero Page Memory Bit, 2 bytes, 5 cycles
+    SMB0      = 0x87,
+    SMB1      = 0x97,
+    SMB2      = 0xA7,
+    SMB3      = 0xB7,
+    SMB4      = 0xC7,
+    SMB5      = 0xD7,
+    SMB6      = 0xE7,
+    SMB7      = 0xF7,
+
+    // BBR - Branch if zero page memory bit is reset, 3 bytes, 5 - 7 cycles
+    BBR0      = 0x0F,
+    BBR1      = 0x1F,
+    BBR2      = 0x2F,
+    BBR3      = 0x3F,
+    BBR4      = 0x4F,
+    BBR5      = 0x5F,
+    BBR6      = 0x6F,
+    BBR7      = 0x7F,
+
+    // BBS - Branch if zero page memory bit is set, 3 bytes, 5 - 7 cycles
+    BBS0      = 0x8F,
+    BBS1      = 0x9F,
+    BBS2      = 0xAF,
+    BBS3      = 0xBF,
+    BBS4      = 0xCF,
+    BBS5      = 0xDF,
+    BBS6      = 0xEF,
+    BBS7      = 0xFF,
+
+    // SToP the processor until the next RST.
+    STP       = 0xDB,
+
+    // WAIt for interrupt
+    WAI       = 0xCB,
+  };
+
+  /*********************************************************************************************************************
+   * Zero page indirect addressing
+   ********************************************************************************************************************/
+  USTEP_DEFINE(ADC_INDZ);
+  USTEP_ADDR_Z_IND;
+  ADD_ACC(ADDR_FULL);
+
+  USTEP_DEFINE(AND_INDZ);
+  USTEP_ADDR_Z_IND;
+  AND_ACC(ADDR_FULL);
+
+  USTEP_DEFINE(CMP_INDZ);
+  USTEP_ADDR_Z_IND;
+  CMP(OE_ACC, ADDR_FULL);
+
+  USTEP_DEFINE(EOR_INDZ);
+  USTEP_ADDR_Z_IND;
+  EOR_ACC(ADDR_FULL);
+
+  USTEP_DEFINE(LDA_INDZ);
+  USTEP_ADDR_Z_IND;
+  LD_NZ(ADDR_FULL, WR_ACC);
+
+  USTEP_DEFINE(ORA_INDZ);
+  USTEP_ADDR_Z_IND;
+  ORA_ACC(ADDR_FULL);
+
+  USTEP_DEFINE(SBC_INDZ);
+  USTEP_ADDR_Z_IND;
+  SUB_ACC(ADDR_FULL);
+
+  USTEP_DEFINE(STA_INDZ);
+  USTEP_ADDR_Z_IND;
+  USTEP_LAST(OE_ACC | WR_RAM | ADDR_FULL);
+
+  /*********************************************************************************************************************
+   * BIT instruction with other addressing modes
+   ********************************************************************************************************************/
+  // Attention! BIT #IMM does not affect N and V flags!
+  USTEP_DEFINE(BIT_IMM);
+  // Memory -> A
+  USTEP_STEP(OE_RAM | ADDR_PC | INC_PC | WR_ALU_A);
+  // ACC -> B
+  USTEP_STEP(OE_ACC | WR_ALU_B);
+  // ACC AND Memory -> Z
+  USTEP_LAST(OE_ALU | ALU_AND | UPD_Z);
+
+  USTEP_DEFINE(BIT_ZX);
+  USTEP_ADDR_Z_IDX(OE_X);
+  BIT(ADDR_ZP);
+
+  USTEP_DEFINE(BIT_ABSX);
+  USTEP_ADDR_ABS_IDX(OE_X);
+  BIT(ADDR_FULL);
+
+  /*********************************************************************************************************************
+   * ACC increment / decrement
+   * N Z C I D V
+   * + + - - - -
+   ********************************************************************************************************************/
+  USTEP_DEFINE(INC_A);
+  INC(OE_ACC, WR_ACC);
+
+  USTEP_DEFINE(DEC_A);
+  DEC(OE_ACC, WR_ACC);
+
+  /*********************************************************************************************************************
+   * JMP (oper,x)
+   ********************************************************************************************************************/
+  USTEP_DEFINE(JMP_INDX);
+  // Indirect address -> ADDRL and ADDRH
+  USTEP_ADDR_ABS_IDX(OE_X);
+  // Jump address -> PCL and PCH
+  USTEP_FLAG(
+    FLAGIN_ALOV | OE_RAM | ADDR_FULL | WR_PCL | INC_ADDRL,
+    FLAGIN_ALOV | OE_RAM | ADDR_FULL | WR_PCL | INC_ADDRL | INC_ADDRH
+  );
+  USTEP_LAST(OE_RAM | ADDR_FULL | WR_PCH);
+
+  /*********************************************************************************************************************
+   * Branch Relative Always
+   ********************************************************************************************************************/
+  USTEP_DEFINE(BRA);
+  USTEP_STEP(BRANCH_LOAD_B);
+  BRANCH_DO_BRANCH;
+
+  /*********************************************************************************************************************
+   * Stack Instructions
+   ********************************************************************************************************************/
+  USTEP_DEFINE(PHX);
+  PUSH_REG(OE_X);
+
+  USTEP_DEFINE(PLX);
+  PULL_REG(WR_X);
+
+  USTEP_DEFINE(PHY);
+  PUSH_REG(OE_Y);
+
+  USTEP_DEFINE(PLY);
+  PULL_REG(WR_Y);
+
+  /*********************************************************************************************************************
+   * STZ - Store Zero in Memory (0 -> M)
+   * N Z C I D V
+   * - - - - - -
+   ********************************************************************************************************************/
+  USTEP_DEFINE(STZ_Z);
+  USTEP_ADDR_Z;
+  USTEP_LAST(OE_CONST | CONST_0 | WR_RAM | ADDR_ZP);
+
+  USTEP_DEFINE(STZ_ZX);
+  USTEP_ADDR_Z_IDX(OE_X);
+  USTEP_LAST(OE_CONST | CONST_0 | WR_RAM | ADDR_ZP);
+
+  USTEP_DEFINE(STZ_ABS);
+  USTEP_ADDR_ABS;
+  USTEP_LAST(OE_CONST | CONST_0 | WR_RAM | ADDR_FULL);
+
+  USTEP_DEFINE(STZ_ABSX);
+  USTEP_ADDR_ABS_IDX(OE_X);
+  USTEP_LAST(OE_CONST | CONST_0 | WR_RAM | ADDR_FULL);
+
+  /*********************************************************************************************************************
+   * TRB - Test & Reset memory Bits with A. (M & ~A -> M, M & A -> Z)
+   * N Z C I D V
+   * - + - - - -
+   ********************************************************************************************************************/
+#define TRB(src, dst) \
+  /* ACC -> A */ \
+  USTEP_STEP(OE_ACC | WR_ALU_A); \
+  /* MEM -> B */ \
+  USTEP_STEP(src | WR_ALU_B); \
+  /* ACC & MEM -> Z */ \
+  USTEP_STEP(OE_ALU | ALU_AND | UPD_Z); \
+  /* ~A -> A */ \
+  USTEP_STEP(OE_ALU | ALU_INVA | WR_ALU_A); \
+  /* Clear bits in memory */ \
+  USTEP_LAST(OE_ALU | ALU_AND | dst)
+
+  USTEP_DEFINE(TRB_Z);
+  USTEP_ADDR_Z;
+  TRB(OE_RAM | ADDR_ZP, WR_RAM | ADDR_ZP);
+
+  USTEP_DEFINE(TRB_ABS);
+  USTEP_ADDR_ABS;
+  TRB(OE_RAM | ADDR_FULL, WR_RAM | ADDR_FULL);
+
+  /*********************************************************************************************************************
+   * TSB - Test & Set memory Bits with A. (M | A -> M, M & A -> Z)
+   * N Z C I D V
+   * - + - - - -
+   ********************************************************************************************************************/
+#define TSB(src, dst) \
+  /* ACC -> A */ \
+  USTEP_STEP(OE_ACC | WR_ALU_A); \
+  /* MEM -> B */ \
+  USTEP_STEP(src | WR_ALU_B); \
+  /* ACC & MEM -> Z */ \
+  USTEP_STEP(OE_ALU | ALU_AND | UPD_Z); \
+  /* Set bits in memory */ \
+  USTEP_LAST(OE_ALU | ALU_OR | dst)
+
+  USTEP_DEFINE(TSB_Z);
+  USTEP_ADDR_Z;
+  TSB(OE_RAM | ADDR_ZP, WR_RAM | ADDR_ZP);
+
+  USTEP_DEFINE(TSB_ABS);
+  USTEP_ADDR_ABS;
+  TSB(OE_RAM | ADDR_FULL, WR_RAM | ADDR_FULL);
+
+  /*********************************************************************************************************************
+   * RMB - Reset Memory Bit
+   ********************************************************************************************************************/
+#define SRMB(const, op) \
+  USTEP_ADDR_Z; \
+  /* Bit number to manipulate -> B */ \
+  USTEP_STEP(OE_CONST | const | WR_ALU_B); \
+  /* MEM -> A */ \
+  USTEP_STEP(OE_RAM | ADDR_ZP | WR_ALU_A); \
+  /* Write back changed bits */ \
+  USTEP_LAST(OE_ALU | op | WR_RAM | ADDR_ZP)
+
+#define RMB(bit) \
+  USTEP_DEFINE(RMB##bit); \
+  SRMB(CONST_##bit, ALU_CLRBIT)
+
+  RMB(0);
+  RMB(1);
+  RMB(2);
+  RMB(3);
+  RMB(4);
+  RMB(5);
+  RMB(6);
+  RMB(7);
+
+  /*********************************************************************************************************************
+   * SMB - Set Memory Bit
+   ********************************************************************************************************************/
+#define SMB(bit) \
+  USTEP_DEFINE(SMB##bit); \
+  SRMB(CONST_##bit, ALU_SETBIT)
+
+  SMB(0);
+  SMB(1);
+  SMB(2);
+  SMB(3);
+  SMB(4);
+  SMB(5);
+  SMB(6);
+  SMB(7);
+
+  /*********************************************************************************************************************
+   * BBR - Branch if zero page memory bit is reset
+   ********************************************************************************************************************/
+#define TEST_BIT(const) \
+    USTEP_ADDR_Z; \
+    /* Bit number to test into B */ \
+    USTEP_STEP(OE_CONST | const | WR_ALU_B); \
+    /* MEM -> A */ \
+    USTEP_STEP(OE_RAM | ADDR_ZP | WR_ALU_A); \
+    /* Test bit and update internal zero bit (ZALU) */ \
+    USTEP_STEP(OE_ALU | ALU_TSTBIT)
+
+#define BBR(bit) \
+  USTEP_DEFINE(BBR##bit); \
+  TEST_BIT(CONST_##bit); \
+  BRANCH_ON_FLAG(FLAGIN_ZALU, 1)
+
+  BBR(0);
+  BBR(1);
+  BBR(2);
+  BBR(3);
+  BBR(4);
+  BBR(5);
+  BBR(6);
+  BBR(7);
+
+  /*********************************************************************************************************************
+   * BBS - Branch if zero page memory bit is set
+   ********************************************************************************************************************/
+#define BBS(bit) \
+  USTEP_DEFINE(BBS##bit); \
+  TEST_BIT(CONST_##bit); \
+  BRANCH_ON_FLAG(FLAGIN_ZALU, 0)
+
+  BBS(0);
+  BBS(1);
+  BBS(2);
+  BBS(3);
+  BBS(4);
+  BBS(5);
+  BBS(6);
+  BBS(7);
+
+  /*********************************************************************************************************************
+   * SToP the processor until the next RST.
+   ********************************************************************************************************************/
+  USTEP_DEFINE(STP);
+  uStep[_inst] = 0;
+  USTEP_FLST(
+    FLAGIN_RST,
+    FLAGIN_RST | OE_CONST | CONST_BRK | WR_INST
+  );
+
+  /*********************************************************************************************************************
+   * WAIt for interrupt
+   ********************************************************************************************************************/
+  USTEP_DEFINE(WAI);
+  uStep[_inst] = 0;
+  USTEP_FLST(
+    FLAGIN_INTR,
+    FLAGIN_INTR | OE_RAM | WR_INST
+  );
+}
+
+/***********************************************************************************************************************
+ * Print one uCode step
+ **********************************************************************************************************************/
+static void UcodePrintStep(unsigned int same, unsigned int last, unsigned int lasti)
+{
+  // Print instruction opcode and mnemonic at the beginning of each opcode
+  if((lasti % USTEP_MAX) == 0) {
+    unsigned i = (lasti / USTEP_MAX) % INSTR_MAX;
+    char *instName = instr[i];
+    printf("\n");
+    if(instName != NULL) {
+      printf("# %02X - %s\n", i, instName);
+    }
+  }
+  else {
+    printf(" ");
+  }
+
+  // Print one or more same steps
+  if(same == 1) {
+    printf("%X", last);
+  }
+  else {
+    printf("%u*%X", same, last);
+  }
+}
+
+/***********************************************************************************************************************
+ * Print uCode as RLE encoded hex file
+ **********************************************************************************************************************/
+static void UcodePrintRLE(void)
+{
+  unsigned int n = 0;
+  printf("v2.0 raw\n\n");
+
+  // Instruction Matrix
+#if 0
+  printf("#   |");
+  for(unsigned int i = 0; i < 16; i++) {
+    printf("%8X | ", i);
+  }
+  for(unsigned int i = 0; i < INSTR_MAX; i++) {
+    if((i % 16) == 0) {
+      printf("\n# %X |", i / 16);
+    }
+    printf("%-8s | ", (instr[i] != NULL) ? instr[i] : "");
+  }
+  printf("\n\n");
+#endif
+
+  // Instruction statistics
+  printf("# CPU: %s\n# Instr.   | Op | Cycles\n", (cpuType == CPU_6502) ? "6502" : "65C02");
+  for(unsigned int i = 0; i < INSTR_MAX; i++) {
+    if(instr[i] != NULL) {
+      n++;
+      printf("# %-8s | ", instr[i]);
+      printf("%02X | ", i);
+      printf("%2u\n", uStep[i]);
+    }
+  }
+  printf("# Total: %u\n", n);
+
+  // Print all uSteps for all opcodes
+  uint32_t last = rom[0];
+  unsigned int same = 0, lasti = 0;
+  for(unsigned int i = 0; i < UCODE_SIZE; i++) {
+    if(rom[i] == last) {
+      same++;
+    }
+    else {
+      UcodePrintStep(same, last, lasti);
+      same = 1;
+    }
+    last = rom[i];
+    lasti = i;
+  }
+  UcodePrintStep(same, last, lasti);
+  printf("\n");
+}
+
+/***********************************************************************************************************************
+ * Generate proper microcode for all supported CPUs to stdout
+ **********************************************************************************************************************/
+int main(int argv, char *argc[])
+{
+  // Determine which CPU type we generate
+  if(argv == 2) {
+    if(strcmp(argc[1], "--65c02") == 0) {
+      cpuType = CPU_65C02;
+    }
+  }
+
+  // Fill with end ucode
+  for(unsigned int i = 0; i < UCODE_SIZE; i++) {
+    rom[i] = RST_USTEP;
+  }
+
+  // Fill each uStep 0 with Fetch and interrupt detection
+  for(unsigned int i = 0; i < INSTR_MAX; i ++) {
+    // No interrupt
+    rom[(0 << ROM_FLAGS_POS) | (i << ROM_INSTR_POS)] = FLAGIN_INTR | OE_RAM | WR_INST | INC_PC;
+    // Interrupt asserted, inject BRK opcode
+    rom[(1 << ROM_FLAGS_POS) | (i << ROM_INSTR_POS)] = FLAGIN_INTR | OE_CONST | CONST_BRK | WR_INST | INT_HOLD;
+  }
+
+  // Generate 6502 uCode
+  GenerateUcode6502();
+
+  // Generate 65C02 uCode
+  if(cpuType == CPU_65C02) {
+    GenerateUcode65C02();
+  }
 
   // Dump uCode to stdout
   UcodePrintRLE();

@@ -100,7 +100,7 @@ I_flag = 3
 ;configure memory - try to stay away from memory used by the system
 ;zero_page memory start address, $52 (82) consecutive Bytes required
 ;                                add 2 if I_flag = 2
-zero_page = $1  
+zero_page = $a  
 
 ;data_segment memory start address, $7B (123) consecutive Bytes required
 data_segment = $200  
@@ -119,7 +119,7 @@ disable_selfmod = 0
 
 ;report errors through I/O channel (0=use standard self trap loops, 1=include
 ;report.i65 as I/O channel, add 3.5 kB)
-report = 1
+report = 0
 
 ;RAM integrity test option. Checks for undesired RAM writes.
 ;set lowest non RAM or RAM mirror address page (-1=disable, 0=64k, $40=16k)
@@ -177,6 +177,9 @@ trap_vc macro
 ; please observe that during the test the stack gets invalidated
 ; therefore a RTS inside the success macro is not possible
 success macro
+        lda #'E'
+        ldx #'N'
+        ldy #'D'
         jmp *           ;test passed, no errors
         endm
     endif
