@@ -118,8 +118,9 @@
 #define FLAGIN_INTR ( 6 << FLAGIN_POS)  // Signal for all interrupts (INT, NMI, RST)
 #define FLAGIN_NMI  ( 7 << FLAGIN_POS)  // NMI
 #define FLAGIN_RST  ( 8 << FLAGIN_POS)  // Reset
-#define FLAGIN_ALOV ( 9 << FLAGIN_POS)  // ADDRL overflow signal
-#define FLAGIN_ZALU (10 << FLAGIN_POS)  // Zero of the last ALU output
+#define FLAGIN_WAK  ( 9 << FLAGIN_POS)  // Wake-up
+#define FLAGIN_ALOV (10 << FLAGIN_POS)  // ADDRL overflow signal
+#define FLAGIN_ZALU (11 << FLAGIN_POS)  // Zero of the last ALU output
 
 // Address output select (2 bits)
 #define SELADDR_POS 16
@@ -1932,8 +1933,8 @@ static void GenerateUcode65C02(void)
   USTEP_DEFINE(WAI);
   uStep[_inst] = 0;
   USTEP_FLST(
-    FLAGIN_INTR,
-    FLAGIN_INTR | OE_RAM | WR_INST
+    FLAGIN_WAK,
+    FLAGIN_WAK | OE_RAM | WR_INST
   );
 }
 

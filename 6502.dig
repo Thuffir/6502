@@ -2313,7 +2313,7 @@ else {
           <string>OV_ADDRL</string>
         </entry>
       </elementAttributes>
-      <pos x="1080" y="800"/>
+      <pos x="1080" y="820"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -2423,7 +2423,7 @@ else {
           <string>Z_ALU</string>
         </entry>
       </elementAttributes>
-      <pos x="1080" y="820"/>
+      <pos x="1080" y="840"/>
     </visualElement>
     <visualElement>
       <elementName>Probe</elementName>
@@ -2629,10 +2629,6 @@ else {
       <p2 x="880" y="520"/>
     </wire>
     <wire>
-      <p1 x="1080" y="840"/>
-      <p2 x="1100" y="840"/>
-    </wire>
-    <wire>
       <p1 x="1420" y="840"/>
       <p2 x="1460" y="840"/>
     </wire>
@@ -2647,6 +2643,10 @@ else {
     <wire>
       <p1 x="880" y="840"/>
       <p2 x="900" y="840"/>
+    </wire>
+    <wire>
+      <p1 x="1080" y="840"/>
+      <p2 x="1100" y="840"/>
     </wire>
     <wire>
       <p1 x="140" y="200"/>
@@ -2809,18 +2809,6 @@ else {
       <p2 x="640" y="20"/>
     </wire>
     <wire>
-      <p1 x="720" y="20"/>
-      <p2 x="940" y="20"/>
-    </wire>
-    <wire>
-      <p1 x="1200" y="20"/>
-      <p2 x="1440" y="20"/>
-    </wire>
-    <wire>
-      <p1 x="1440" y="20"/>
-      <p2 x="1500" y="20"/>
-    </wire>
-    <wire>
       <p1 x="640" y="20"/>
       <p2 x="720" y="20"/>
     </wire>
@@ -2829,8 +2817,20 @@ else {
       <p2 x="1900" y="20"/>
     </wire>
     <wire>
+      <p1 x="720" y="20"/>
+      <p2 x="940" y="20"/>
+    </wire>
+    <wire>
+      <p1 x="1200" y="20"/>
+      <p2 x="1440" y="20"/>
+    </wire>
+    <wire>
       <p1 x="940" y="20"/>
       <p2 x="1200" y="20"/>
+    </wire>
+    <wire>
+      <p1 x="1440" y="20"/>
+      <p2 x="1500" y="20"/>
     </wire>
     <wire>
       <p1 x="220" y="660"/>
@@ -2961,12 +2961,12 @@ else {
       <p2 x="1460" y="800"/>
     </wire>
     <wire>
-      <p1 x="1080" y="800"/>
-      <p2 x="1100" y="800"/>
-    </wire>
-    <wire>
       <p1 x="540" y="800"/>
       <p2 x="560" y="800"/>
+    </wire>
+    <wire>
+      <p1 x="980" y="800"/>
+      <p2 x="1100" y="800"/>
     </wire>
     <wire>
       <p1 x="1880" y="160"/>
@@ -3261,6 +3261,10 @@ else {
       <p2 x="1240" y="240"/>
     </wire>
     <wire>
+      <p1 x="1080" y="820"/>
+      <p2 x="1100" y="820"/>
+    </wire>
+    <wire>
       <p1 x="540" y="820"/>
       <p2 x="560" y="820"/>
     </wire>
@@ -3279,10 +3283,6 @@ else {
     <wire>
       <p1 x="1420" y="820"/>
       <p2 x="1460" y="820"/>
-    </wire>
-    <wire>
-      <p1 x="1080" y="820"/>
-      <p2 x="1100" y="820"/>
     </wire>
     <wire>
       <p1 x="1320" y="180"/>
@@ -3639,10 +3639,6 @@ else {
     <wire>
       <p1 x="1780" y="580"/>
       <p2 x="1780" y="620"/>
-    </wire>
-    <wire>
-      <p1 x="1080" y="840"/>
-      <p2 x="1080" y="860"/>
     </wire>
     <wire>
       <p1 x="1080" y="860"/>
