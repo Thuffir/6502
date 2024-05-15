@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
  *
- * 6502 Microcode
+ * 6502 / 65C02 Microcode
  *
  * by Thuffir
  *
@@ -76,10 +76,10 @@
 #define ALU_SUB     ( 1 << ALU_POS)   // Binary subtract
 #define ALU_DADD    ( 2 << ALU_POS)   // Binary or BCD add
 #define ALU_DSUB    ( 3 << ALU_POS)   // Binary or BCD subtract
-#define ALU_AND     ( 4 << ALU_POS)
-#define ALU_OR      ( 5 << ALU_POS)
-#define ALU_XOR     ( 6 << ALU_POS)
-#define ALU_SHR     ( 7 << ALU_POS)
+#define ALU_AND     ( 4 << ALU_POS)   // ALU AND
+#define ALU_OR      ( 5 << ALU_POS)   // ALU OR
+#define ALU_XOR     ( 6 << ALU_POS)   // ALU XOR
+#define ALU_SHR     ( 7 << ALU_POS)   // ALU Shift Right
 #define ALU_CLRBIT  ( 8 << ALU_POS)   // ALU Clear Bit
 #define ALU_SETBIT  ( 9 << ALU_POS)   // ALU Set Bit
 #define ALU_TSTBIT  (10 << ALU_POS)   // ALU Test Bit
@@ -110,7 +110,7 @@
 // Flags input to uCode ROM (4 bits)
 #define FLAGIN_POS  12
 #define FLAGIN_C    ( 0 << FLAGIN_POS)  // Carry flag
-#define FLAGIN_Z    ( 1 << FLAGIN_POS)  // Carry flag
+#define FLAGIN_Z    ( 1 << FLAGIN_POS)  // Zero flag
 #define FLAGIN_V    ( 2 << FLAGIN_POS)  // Overflow flag
 #define FLAGIN_N    ( 3 << FLAGIN_POS)  // Negative flag
 #define FLAGIN_CALU ( 4 << FLAGIN_POS)  // Carry of the last ALU output
@@ -1938,6 +1938,11 @@ static void GenerateUcode65C02(void)
   );
 }
 
+// Comment header line
+#define COMMENT_HEADER_LINE "##########################################################################################\
+##############################"
+#define COMMENT_HEADER_LINE_CR COMMENT_HEADER_LINE"\n"
+
 /***********************************************************************************************************************
  * Print one uCode step
  **********************************************************************************************************************/
@@ -1948,8 +1953,11 @@ static void UcodePrintStep(unsigned int same, unsigned int last, unsigned int la
     unsigned i = (lasti / USTEP_MAX) % INSTR_MAX;
     char *instName = instr[i];
     printf("\n");
+    if(i == 0) {
+      printf("\n" COMMENT_HEADER_LINE_CR "# Flag input: %u\n" COMMENT_HEADER_LINE_CR, lasti / USTEP_MAX / INSTR_MAX);
+    }
     if(instName != NULL) {
-      printf("# %02X - %s\n", i, instName);
+      printf("# %02X - %s (%u)\n", i, instName, uStep[i]);
     }
   }
   else {
@@ -1957,12 +1965,10 @@ static void UcodePrintStep(unsigned int same, unsigned int last, unsigned int la
   }
 
   // Print one or more same steps
-  if(same == 1) {
-    printf("%X", last);
+  if(same > 1) {
+    printf("%u*", same);
   }
-  else {
-    printf("%u*%X", same, last);
-  }
+  printf("%08X", last);
 }
 
 /***********************************************************************************************************************
@@ -1971,7 +1977,7 @@ static void UcodePrintStep(unsigned int same, unsigned int last, unsigned int la
 static void UcodePrintRLE(void)
 {
   unsigned int n = 0;
-  printf("v2.0 raw\n\n");
+  printf("v2.0 raw\n");
 
   // Instruction Matrix
 #if 0
@@ -1989,16 +1995,16 @@ static void UcodePrintRLE(void)
 #endif
 
   // Instruction statistics
-  printf("# CPU: %s\n# Instr.   | Op | Cycles\n", (cpuType == CPU_6502) ? "6502" : "65C02");
+  printf(COMMENT_HEADER_LINE_CR "# uCode for %s\n" COMMENT_HEADER_LINE_CR
+    "# Instr.   | Op | Cycles\n"
+    "#----------+----+-------\n", (cpuType == CPU_6502) ? "6502" : "65C02");
   for(unsigned int i = 0; i < INSTR_MAX; i++) {
     if(instr[i] != NULL) {
+      printf("# %-8s | %02X | %2u\n", instr[i], i, uStep[i]);
       n++;
-      printf("# %-8s | ", instr[i]);
-      printf("%02X | ", i);
-      printf("%2u\n", uStep[i]);
     }
   }
-  printf("# Total: %u\n", n);
+  printf(COMMENT_HEADER_LINE_CR "# Total opcodes: %u\n" COMMENT_HEADER_LINE, n);
 
   // Print all uSteps for all opcodes
   uint32_t last = rom[0];
@@ -2019,7 +2025,7 @@ static void UcodePrintRLE(void)
 }
 
 /***********************************************************************************************************************
- * Generate proper microcode for all supported CPUs to stdout
+ * Generate microcode for a specific CPU to stdout
  **********************************************************************************************************************/
 int main(int argv, char *argc[])
 {
