@@ -2198,11 +2198,15 @@ else {
       <elementName>Tunnel</elementName>
       <elementAttributes>
         <entry>
+          <string>rotation</string>
+          <rotation rotation="2"/>
+        </entry>
+        <entry>
           <string>NetName</string>
           <string>OE_RAM</string>
         </entry>
       </elementAttributes>
-      <pos x="620" y="760"/>
+      <pos x="580" y="760"/>
     </visualElement>
     <visualElement>
       <elementName>Driver</elementName>
@@ -2263,20 +2267,6 @@ else {
         </entry>
       </elementAttributes>
       <pos x="540" y="880"/>
-    </visualElement>
-    <visualElement>
-      <elementName>Out</elementName>
-      <elementAttributes>
-        <entry>
-          <string>rotation</string>
-          <rotation rotation="2"/>
-        </entry>
-        <entry>
-          <string>Label</string>
-          <string>OE</string>
-        </entry>
-      </elementAttributes>
-      <pos x="540" y="760"/>
     </visualElement>
     <visualElement>
       <elementName>Tunnel</elementName>
@@ -3484,10 +3474,6 @@ else {
       <p2 x="1520" y="500"/>
     </wire>
     <wire>
-      <p1 x="540" y="760"/>
-      <p2 x="600" y="760"/>
-    </wire>
-    <wire>
       <p1 x="200" y="760"/>
       <p2 x="240" y="760"/>
     </wire>
@@ -3516,8 +3502,8 @@ else {
       <p2 x="1460" y="760"/>
     </wire>
     <wire>
-      <p1 x="600" y="760"/>
-      <p2 x="620" y="760"/>
+      <p1 x="580" y="760"/>
+      <p2 x="600" y="760"/>
     </wire>
     <wire>
       <p1 x="220" y="440"/>

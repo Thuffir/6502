@@ -160,7 +160,17 @@
 // Max numbers
 #define INSTR_MAX     ( 1 << (ROM_FLAGS_POS - ROM_INSTR_POS)) // Number of maximum opcodes (256)
 #define USTEP_MAX     ( 1 << (ROM_INSTR_POS - ROM_USTEP_POS)) // Number of maximum uSteps (16)
-#define UCODE_SIZE    ( 1 << (ROM_FLAGS_POS + 1))             // Size of the uCode ROM (8 kB)
+#define UCODE_SIZE    ( 1 << (ROM_FLAGS_POS + 1))             // Size of the uCode ROM (8k * 32 bits)
+
+// Type of the uCode variable, make sure it can hold all signals
+typedef uint32_t UcodeType;
+
+// Opcode nmemonics as strings
+char *instr[INSTR_MAX];
+// Number of uSteps used for a specific opcode
+uint8_t uStep[INSTR_MAX];
+// uCode rom content
+UcodeType rom[UCODE_SIZE];
 
 // Define an opcode and begin the first uStep
 #define USTEP_DEFINE(inst) { \
@@ -273,13 +283,6 @@ enum {
   CPU_6502,
   CPU_65C02
 } cpuType = CPU_6502;
-
-// Opcode nmemonics as strings
-char *instr[INSTR_MAX];
-// Number of uSteps used for a specific opcode
-uint8_t uStep[INSTR_MAX];
-// uCode rom content
-uint32_t rom[UCODE_SIZE];
 
 /***********************************************************************************************************************
  * Generate 6502 microcode
@@ -2007,7 +2010,7 @@ static void UcodePrintRLE(void)
   printf(COMMENT_HEADER_LINE_CR "# Total opcodes: %u\n" COMMENT_HEADER_LINE, n);
 
   // Print all uSteps for all opcodes
-  uint32_t last = rom[0];
+  UcodeType last = rom[0];
   unsigned int same = 0, lasti = 0;
   for(unsigned int i = 0; i < UCODE_SIZE; i++) {
     if(rom[i] == last) {
