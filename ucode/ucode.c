@@ -904,15 +904,19 @@ static void GenerateUcode6502(void)
   LSR(OE_ACC, WR_ACC);
 
   USTEP_DEFINE(LSR_Z);
+  USTEP_ADDR_Z;
   LSR(OE_RAM | ADDR_ZP, WR_RAM | ADDR_ZP);
 
   USTEP_DEFINE(LSR_ZX);
+  USTEP_ADDR_Z_IDX(OE_X);
   LSR(OE_RAM | ADDR_ZP, WR_RAM | ADDR_ZP);
 
   USTEP_DEFINE(LSR_ABS);
+  USTEP_ADDR_ABS;
   LSR(OE_RAM | ADDR_FULL, WR_RAM | ADDR_FULL);
 
   USTEP_DEFINE(LSR_ABSX);
+  USTEP_ADDR_ABS_IDX(OE_X);
   LSR(OE_RAM | ADDR_FULL, WR_RAM | ADDR_FULL);
 
   /*********************************************************************************************************************
