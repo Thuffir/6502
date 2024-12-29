@@ -932,15 +932,19 @@ static void GenerateUcode6502(void)
   ROR(OE_ACC, WR_ACC);
 
   USTEP_DEFINE(ROR_Z);
+  USTEP_ADDR_Z;
   ROR(OE_RAM | ADDR_ZP, WR_RAM | ADDR_ZP);
 
   USTEP_DEFINE(ROR_ZX);
+  USTEP_ADDR_Z_IDX(OE_X);
   ROR(OE_RAM | ADDR_ZP, WR_RAM | ADDR_ZP);
 
   USTEP_DEFINE(ROR_ABS);
+  USTEP_ADDR_ABS;
   ROR(OE_RAM | ADDR_FULL, WR_RAM | ADDR_FULL);
 
   USTEP_DEFINE(ROR_ABSX);
+  USTEP_ADDR_ABS_IDX(OE_X);
   ROR(OE_RAM | ADDR_FULL, WR_RAM | ADDR_FULL);
 
   /*********************************************************************************************************************
