@@ -176,7 +176,7 @@ UcodeType rom[UCODE_SIZE];
 #define USTEP_DEFINE(inst) { \
   unsigned int _inst = (inst); \
   uStep[_inst] = 1; \
-  instr[inst] = #inst
+  instr[_inst] = #inst
 
 // Set an uStep for one flag input position
 #define USTEP_FLAG_STEP(flag, ucode) \
