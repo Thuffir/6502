@@ -13,6 +13,7 @@ The interrupts are handled by injecting the **BRK** opcode just like in the orig
 To start open the [6502.dig](6502.dig) file in [Digital](https://github.com/hneemann/Digital).
 The test suite will be loaded into the RAM and the simulation can be started.
 (The test suite runs quite a long time but when it finishes it loads ASCII `'E'($45)`, `'N'($4E)`, `'D'($44)` into the registers `A` `X` and `Y` and the `PC` loops around `$34DE`.)
+This is a simplified version of the circuit (simpler [ALU](components/alu_6502.dig) and [interrupt logic](components/interrupt_6502.dig)) which only supports the 6502 microcode.
 
 There is also a generic version of the [CPU](cpu.dig) with isolated data bus which can be included as a sub-circuit and configured as either 6502 or 65C02. For examples see [6502test.dig](6502test.dig) and [65c02test.dig](65c02test.dig).
 In theese versions the test suit outputs to the memory mapped data terminal at address `$0000`.
