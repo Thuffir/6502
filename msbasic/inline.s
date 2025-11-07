@@ -61,6 +61,16 @@ INLINAIM:
         cmp     #$0D
         beq     L2453
     .ifndef CONFIG_NO_LINE_EDITING
+      .ifdef THUFFIR
+        cmp     #BS	; Backspace deletes last character
+        beq     L2420
+        cmp     #DEL	; So does DEL
+        beq     L2420
+        cmp     #CTRL_C	; CTRL-C discards current line
+        beq     L2423
+        cmp     #CTRL_X	; So does CTRL-X
+        beq     L2423
+      .endif
         cmp     #$20
       .ifdef AIM65
         bcc     L244E
@@ -74,9 +84,14 @@ INLINAIM:
         cmp     #$7F
         beq     L2420
         .endif
+    .ifdef THUFFIR
+        cmp     #$7F	; Allow all 7-bit ascii characters
+    .else
         cmp     #$7D
+    .endif
       .endif
         bcs     INLIN2
+    .ifndef THUFFIR
         cmp     #$40 ; @
       .ifdef AIM65
         beq     LB35F
@@ -89,9 +104,12 @@ INLINAIM:
       .endif
         beq     L2420
       .endif
+    .endif
 L2443:
       .ifdef MICROTAN
         cpx     #$4F
+      .elseif .def(THUFFIR)
+        cpx     #ZP_INBUFS	; Check for end of input buffer
       .else
         cpx     #$47
       .endif

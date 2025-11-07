@@ -11,3 +11,7 @@
 .ifdef SYM1
         jmp     PR_WRITTEN_BY
 .endif
+.ifdef THUFFIR
+HEADER:	.byte "*** MS-BASIC ***", CR, LF, CR, LF
+	.byte "Detecting RAM size...", 0
+.endif

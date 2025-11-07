@@ -2,7 +2,8 @@
 .feature org_per_seg
 .zeropage
 
-.org ZP_START1
+.org ZP_START
+;.org ZP_START1
 
 GORESTART:
 	.res 3
@@ -13,7 +14,7 @@ GOAYINT:
 GOGIVEAYF:
 	.res 2
 
-.org ZP_START2
+;.org ZP_START2
 Z15:
 	.res 1
 .ifndef POSX; allow override
@@ -35,9 +36,12 @@ TXPSV:
 	.res 2
 .ifndef INPUTBUFFER; allow override
 INPUTBUFFER:
+      .ifdef THUFFIR
+	.res ZP_INBUFS	; Reserve space for input buffer
+      .endif
 .endif
 
-.org ZP_START3
+;.org ZP_START3
 
 CHARAC:
 	.res 1
@@ -64,7 +68,7 @@ CPRMASK:
 Z14:
 	.res 1
 
-.org ZP_START4
+;.org ZP_START4
 
 TEMPPT:
 	.res 1
@@ -199,5 +203,3 @@ TXTPTR = <(GENERIC_TXTPTR-GENERIC_CHRGET + CHRGET)
 CHRGOT = <(GENERIC_CHRGOT-GENERIC_CHRGET + CHRGET)
 CHRGOT2 = <(GENERIC_CHRGOT2-GENERIC_CHRGET + CHRGET)
 RNDSEED = <(GENERIC_RNDSEED-GENERIC_CHRGET + CHRGET)
-
-

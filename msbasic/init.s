@@ -203,7 +203,7 @@ L4098:
   .endif
         ldx     #TEMPST
         stx     TEMPPT
-.ifndef CONFIG_CBM_ALL
+.if !(.def(CONFIG_CBM_ALL) || .def(THUFFIR))
         lda     #<QT_MEMORY_SIZE
         ldy     #>QT_MEMORY_SIZE
         jsr     STROUT
@@ -298,7 +298,7 @@ L40FA:
         sty     FRETOP+1
 .endif
 L4106:
-.ifndef CONFIG_CBM_ALL
+.if !(.def(CONFIG_CBM_ALL) || .def(THUFFIR))
   .ifdef APPLE
         lda     #$FF
         jmp     L2829
@@ -449,7 +449,7 @@ QT_WANT:
         .byte   0
   .endif
 QT_WRITTEN_BY:
-  .ifndef CONFIG_CBM_ALL
+  .if !(.def(CONFIG_CBM_ALL) || .def(THUFFIR))
   .if !(.def(AIM65) || .def(SYM1))
     .ifdef APPLE
 		asc80 "COPYRIGHT 1977 BY MICROSOFT CO"

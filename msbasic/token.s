@@ -40,7 +40,7 @@
 .ifndef CONFIG_NO_POKE
 		keyword_rts "WAIT", WAIT
 .endif
-.ifndef KBD
+.if (!.def(KBD)) && (!.def(THUFFIR))
 		keyword_rts "LOAD", LOAD
 		keyword_rts "SAVE", SAVE
 .endif

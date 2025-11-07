@@ -25,6 +25,9 @@ AIM65 := 1
 .elseif .def(sym1)
 SYM1 := 1
 .include "defines_sym1.s"
+.elseif .def(thuffir)
+THUFFIR := 1
+.include "defines_thuffir.s"
 .endif
 
 .ifdef CONFIG_2C
