@@ -22,10 +22,57 @@ In theese versions the test suit output to the memory mapped data terminal at ad
 
 Unfortunately Digital does not allow to "dive" into a sub-circuit during the simulation, but if you right click on the RAM you can view it's contents updating during the simulation.
 
-You will need:
+The circuit [6502_basic.dig](6502_basic.dig) shows a tipical configuration to run MS-BASIC including a telnet terminal as I/O.
+
+![MS-BASIC](images/6502_basic.svg)
+
+Memory configuration:
+| Start | End   | Peripheral      |
+|-------|-------|-----------------|
+| $0000 | $7FFF | 32 KB RAM       |
+| $8000 | $BFFF | Telnet I/O      |
+| $C000 | $FFFF | 16 KB Basic ROM |
+
+The [MS-BASIC](https://github.com/mist64/cbmsrc) source has been [modified](msbasic) to work with the above configuration and includes the compiled binary [ROM image](msbasic/tmp/thuffir.bin) which the circuit loads on start. You will need a decent terminal program (putty) to connect to port 23. The basic interpretter understands only capitals so use caps lock.
+
+```
+*** MS-BASIC ***
+
+Detecting RAM size...
+U
+ 32255 BYTES FREE
+
+
+COPYRIGHT 1977 BY MICROSOFT CO.
+
+OK
+5 A$(0)="/":A$(1)="\"
+10 PRINT A$(0.5+RND(1));:GOTO 10
+RUN
+//\//\/\\\\/\/\\//\\/\\\/\\\\\\\\////\\\\\\//\/\\\\\///\\/\/\\//\\/\///\/\\\/\//
+//\\\\/\/\\/\\\\\\//\\/\//\\\/\/\\/\/\//\/\\\/\\\\\//\\/\/\//\//\\\\\\\\\//\\/\/
+//\\\\///\\/\\\\\//\/\/\//\/\\\/\\\/\//\\/\/\//////\//\///////\\/\\\/\\//\/\\\\/
+/\//\//\\//\\\/\/\\/\\\////\\/\///\\////\\\/\/\/\/\/\\\/\\\\\/\\\///\\/\\/\\\\//
+///\//\/////\///////\\/\/\//\/\/\/\\\/\\////\/\//\///\\\/\//\/\\\/\////\\\//\\\/
+///\\/\\//\/\//\\\/\////\\\///////\\\//\/\\\//\\\\\///\\//\//\///\/\\/\\\//\/\/\
+\/////\\//\/\/\////\//\\\/\//\/\\\\\/\////\\\//\\\/\\////\/\/\/\\\/\\\///\\\\/\/
+\//\\//\//\\\\/\\////\///\////\/\/\///\//\\\\\///\/\///\/\//\/\\///////\\\/\//\\
+\//\\//\///\/\//\\\\\\\/\/\//\\\/\/\\/\\\\/\\/\/\/\/\\/\\\\\\\\\\/\\///\/\/\\\//
+\\\\/\/\\//\\\/////\/\//\//\\\\\/\////\\\/\/\\\\/\\//\///////\////\\///\\\\\/\\\
+\//////\\/\/\\\///\\/\\\/\/\\\\\\///\//\/\/\//\/\\\\/\/\//\\\\/\\///\/\\\\\\///\
+/\//\/\//\/////\//\/\///\\////\//\\//\///\//\/\//\\////\\/\\\/\\/\\\/\//\\/\/\\/
+\\/\///\//\/\\/\\/\//////\///\\\//\\\///\\\////\\//\\\\\/\/\\\\////\\\\\/\\\/\\/
+\/\//\\/\////\/\//\///\/\\\/\//\/\/\//\//\/\/\\///\//\\\///\/\/\\\
+BREAK IN  10
+OK
+```
+Note: The `U` below `Detecting RAM size...` is the RAM size test routine from BASIC writing it's test pattern directly after the RAM area but it hits the telnet I/O space.
+
+In general you will need:
 - [Helmut Neemann's Digital simulator](https://github.com/hneemann/Digital) to run the circuit
 - A C compiler if you want to change the microcode easily
-- A 6502 assembler if you want to run your own 6502 code
+- A 6502 assembler if you want to run your own 6502 code or make changes to the test suits or the MS-BASIC sources
+- A telnet client or terminal program if you want to play with MS-BASIC
 
 Inspirations and informations are taken from:
 - [Ben Eater's YouTube channel](https://www.youtube.com/@BenEater)
